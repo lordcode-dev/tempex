@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Tepex Mail</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="card">
+    <h1>Tepex</h1>
+    <select id="expiry">
+      <option value="10">10 Minutes</option>
+      <option value="60">1 Hour</option>
+    </select>
+    <button onclick="generate()">Generate Email</button>
+    <h2 id="email"></h2>
+    <p>Expires at: <span id="expires"></span></p>
+    <ul id="inbox"></ul>
+  </div>
+<script src="script.js"></script>
+</body>
+</html>
