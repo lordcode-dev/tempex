@@ -3,6 +3,79 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tepex - 10 Minute Mail Clone</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app">
+    <header class="header">
+      <div>
+        <h1>Tepex</h1>
+        <p>One-page temporary mail clone powered by Mail.tm</p>
+      </div>
+      <div class="header-actions">
+        <button id="new-email" class="btn primary">Get New Email</button>
+        <button id="extend" class="btn">Extend 10 min</button>
+      </div>
+    </header>
+
+    <section class="mailbox-bar card">
+      <div class="address-wrap">
+        <label>Temporary Email Address</label>
+        <div class="address-row">
+          <input id="address" readonly value="Press Get New Email" />
+          <button id="copy" class="btn">Copy</button>
+        </div>
+      </div>
+      <div class="meta-wrap">
+        <div>
+          <label>Remaining</label>
+          <div id="countdown" class="meta-value">--:--</div>
+        </div>
+        <div>
+          <label>Lifetime</label>
+          <select id="expiry" class="input">
+            <option value="10">10 Minutes</option>
+            <option value="60">1 Hour</option>
+          </select>
+        </div>
+        <div>
+          <label>Status</label>
+          <div id="status" class="meta-value muted">Idle</div>
+        </div>
+      </div>
+    </section>
+
+    <main class="grid">
+      <section class="card inbox">
+        <div class="section-head">
+          <h2>Inbox</h2>
+          <div class="controls">
+            <span id="message-count" class="muted">0 messages</span>
+            <button id="refresh" class="btn">Refresh</button>
+          </div>
+        </div>
+        <ul id="message-list" class="message-list"></ul>
+      </section>
+
+      <section class="card viewer">
+        <div class="section-head">
+          <h2>Message Viewer</h2>
+          <button id="delete" class="btn danger" disabled>Delete</button>
+        </div>
+
+        <div id="empty-view" class="empty-view">
+          Select an email from the inbox to read full content.
+        </div>
+
+        <article id="message-view" class="message-view hidden">
+          <h3 id="view-subject"></h3>
+          <p id="view-from" class="muted"></p>
+          <p id="view-to" class="muted"></p>
+          <p id="view-date" class="muted"></p>
+          <pre id="view-text" class="message-text"></pre>
+          <iframe id="view-html" class="message-html" title="HTML email content"></iframe>
+        </article>
   <title>Tepex Mail</title>
   <link rel="stylesheet" href="style.css" />
 </head>

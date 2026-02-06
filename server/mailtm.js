@@ -56,6 +56,19 @@ export async function getMessages(token) {
   });
 }
 
+export async function getMessage(token, messageId) {
+  return request(`/messages/${messageId}`, {
+    headers: { Authorization: `Bearer ${token}` }
+  });
+}
+
+export async function deleteMessage(token, messageId) {
+  return request(`/messages/${messageId}`, {
+    method: "DELETE",
+    headers: { Authorization: `Bearer ${token}` }
+  });
+}
+
 export async function createMailboxViaMailTm(maxAttempts = 5) {
   const domains = await getDomains();
 
