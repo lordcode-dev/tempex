@@ -1,32 +1,69 @@
-let email = null;
+let currentEmail = "";
+let poller = null;
 
-async function generate() {
-  const expiry = document.getElementById("expiry").value;
+const emailEl = document.getElementById("email");
+const expiresEl = document.getElementById("expires");
+const inboxEl = document.getElementById("inbox");
+const messageCountEl = document.getElementById("message-count");
+const expirySelect = document.getElementById("expiry");
+
+async function generateEmail() {
+  const expiry = Number(expirySelect.value);
   const res = await fetch("/api/email", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ expiry: Number(expiry) })
+    body: JSON.stringify({ expiry })
   });
+
   const data = await res.json();
-  email = data.email;
-  document.getElementById("email").innerText = email;
-  document.getElementById("expires").innerText =
-    new Date(data.expiresAt).toLocaleTimeString();
-  pollInbox();
+  currentEmail = data.email;
+  emailEl.innerText = currentEmail;
+  expiresEl.innerText = new Date(data.expiresAt).toLocaleTimeString();
+  await refreshInbox();
+
+  if (poller) clearInterval(poller);
+  poller = setInterval(refreshInbox, 4000);
 }
 
-function pollInbox() {
-  setInterval(async () => {
-    if (!email) return;
-    const r = await fetch(`/api/inbox/${email}`);
-    if (!r.ok) return;
-    const msgs = await r.json();
-    const ul = document.getElementById("inbox");
-    ul.innerHTML = "";
-    msgs.forEach(m => {
+async function refreshInbox() {
+  if (!currentEmail) return;
+
+  const r = await fetch(`/api/inbox/${currentEmail}`);
+  if (!r.ok) return;
+  const messages = await r.json();
+
+  inboxEl.innerHTML = "";
+  if (!messages.length) {
+    inboxEl.innerHTML = `
+      <li class="empty">
+        <h4>No messages yet</h4>
+        <p>We are checking automatically. Try refresh if you expect mail.</p>
+      </li>
+    `;
+  } else {
+    messages.forEach(message => {
       const li = document.createElement("li");
-      li.innerText = `${m.from.address} - ${m.subject}`;
-      ul.appendChild(li);
+      li.className = "message";
+      li.innerHTML = `
+        <h4>${message.subject || "(No subject)"}</h4>
+        <span>${message.from.address} · ${new Date(message.createdAt).toLocaleTimeString()}</span>
+      `;
+      inboxEl.appendChild(li);
     });
-  }, 3000);
+  }
+
+  messageCountEl.innerText = `${messages.length} message${messages.length === 1 ? "" : "s"}`;
 }
+
+async function copyEmail() {
+  if (!currentEmail) return;
+  await navigator.clipboard.writeText(currentEmail);
+}
+
+const generateBtn = document.getElementById("generate");
+const refreshBtn = document.getElementById("refresh");
+const copyBtn = document.getElementById("copy");
+
+generateBtn.addEventListener("click", generateEmail);
+refreshBtn.addEventListener("click", refreshInbox);
+copyBtn.addEventListener("click", copyEmail);

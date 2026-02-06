@@ -8,5 +8,13 @@ export function createSession(email, token, ttl) {
 }
 
 export function getSession(email) {
-  return sessions.get(email);
+  const session = sessions.get(email);
+
+  if (!session) return null;
+  if (Date.now() > session.expiresAt) {
+    sessions.delete(email);
+    return null;
+  }
+
+  return session;
 }

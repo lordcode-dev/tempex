@@ -1,32 +1,53 @@
 import express from "express";
-import crypto from "crypto";
-import { getDomain, createAccount, login, getMessages } from "./mailtm.js";
+import { createMailboxViaMailTm, getMessages } from "./mailtm.js";
 import { createSession, getSession } from "./expiry.js";
 
 const app = express();
 app.use(express.json());
 app.use(express.static("public"));
 
-app.post("/api/email", async (req, res) => {
-  const expiry = req.body.expiry === 60 ? 3600 : 600;
-  const domain = await getDomain();
-  const local = crypto.randomBytes(3).toString("hex");
-  const email = `${local}@${domain}`;
-  const password = crypto.randomBytes(6).toString("hex");
+function getTtl(expiry) {
+  return expiry === 60 ? 3600 : 600;
+}
 
-  await createAccount(email, password);
-  const token = await login(email, password);
-  const expiresAt = createSession(email, token, expiry);
+async function generateMailbox(req, res) {
+  try {
+    const expiry = Number(req.body?.expiry || 10);
+    const ttl = getTtl(expiry);
+    const mailbox = await createMailboxViaMailTm();
+    const expiresAt = createSession(mailbox.email, mailbox.token, ttl);
 
-  res.json({ email, expiresAt, ttl: expiry });
-});
+    res.json({
+      email: mailbox.email,
+      expiresAt,
+      ttl,
+      generatedAt: Date.now(),
+      provider: mailbox.provider
+    });
+  } catch (error) {
+    res.status(502).json({ error: error.message || "Unable to generate mailbox with Mail.tm" });
+  }
+}
+
+app.post("/api/email", generateMailbox);
+app.post("/api/email/generate", generateMailbox);
 
 app.get("/api/inbox/:email", async (req, res) => {
-  const session = getSession(req.params.email);
-  if (!session) return res.status(404).json({ error: "Expired" });
+  try {
+    const session = getSession(req.params.email);
+    if (!session) {
+      return res.status(404).json({ error: "Mailbox expired or unavailable" });
+    }
 
-  const data = await getMessages(session.token);
-  res.json(data["hydra:member"]);
+    const data = await getMessages(session.token);
+    res.json(data["hydra:member"] || []);
+  } catch (error) {
+    res.status(502).json({ error: error.message || "Unable to fetch inbox" });
+  }
+});
+
+app.get("/api/health", (_req, res) => {
+  res.json({ status: "ok" });
 });
 
 app.listen(3000, () => console.log("Tepex running on http://localhost:3000"));
