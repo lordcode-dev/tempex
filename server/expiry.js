@@ -31,6 +31,7 @@ export function getSession(email) {
 
   if (!session) return null;
   if (Date.now() > session.expiresAt) {
+    clearTimeout(session.timeoutId);
     sessions.delete(email);
     return null;
   }

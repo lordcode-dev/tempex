@@ -81,6 +81,7 @@ export async function createMailboxViaMailTm(maxAttempts = 5) {
     try {
       await createAccount(address, password);
       const token = await login(address, password);
+      return { email: address, token, provider: "mail.tm" };
       return { email: address, password, token, provider: "mail.tm" };
     } catch (error) {
       const isConflict = error.status === 422 || /used|exists|taken/i.test(error.message || "");
