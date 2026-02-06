@@ -76,6 +76,81 @@
           <pre id="view-text" class="message-text"></pre>
           <iframe id="view-html" class="message-html" title="HTML email content"></iframe>
         </article>
+  <title>Tepex Mail</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="page">
+    <header class="topbar">
+      <div class="brand">
+        <span class="brand-mark">10</span>
+        <div>
+          <p class="brand-title">Tepex Mail</p>
+          <p class="brand-subtitle">Temporary mail powered by Mail.tm</p>
+        </div>
+      </div>
+      <div class="top-actions">
+        <button class="ghost" id="refresh">Refresh</button>
+        <button class="primary" id="generate">New Address</button>
+      </div>
+    </header>
+
+    <main class="content">
+      <section class="panel mailbox">
+        <div class="panel-header">
+          <h2>Your 10 Minute Mailbox</h2>
+          <span class="pill">Live inbox</span>
+        </div>
+        <p class="helper">
+          Use this disposable email for quick sign-ups, confirmations, and testing. Messages
+          arrive automatically and disappear when the timer ends.
+        </p>
+
+        <div class="email-card">
+          <div>
+            <p class="label">Your Email Address</p>
+            <p class="email" id="email">Click “New Address” to start</p>
+          </div>
+          <button class="ghost" id="copy">Copy</button>
+        </div>
+
+        <div class="timer">
+          <div>
+            <p class="label">Expires in</p>
+            <p class="time" id="expires">--:--</p>
+          </div>
+          <div class="select-wrap">
+            <p class="label">Lifetime</p>
+            <select id="expiry">
+              <option value="10">10 Minutes</option>
+              <option value="60">1 Hour</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="tips">
+          <div>
+            <h3>Keep it simple</h3>
+            <p>Copy the address, use it anywhere, and wait for the message list to fill.</p>
+          </div>
+          <div>
+            <h3>Auto-refresh</h3>
+            <p>Inbox checks every few seconds. Hit refresh if you are waiting on a new mail.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel inbox">
+        <div class="panel-header">
+          <h2>Inbox</h2>
+          <span class="muted" id="message-count">0 messages</span>
+        </div>
+        <ul id="inbox" class="message-list">
+          <li class="empty">
+            <h4>No messages yet</h4>
+            <p>Generate a mailbox and wait for emails to appear.</p>
+          </li>
+        </ul>
       </section>
     </main>
   </div>
