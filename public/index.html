@@ -1,21 +1,87 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Tepex Mail</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="card">
-    <h1>Tepex</h1>
-    <select id="expiry">
-      <option value="10">10 Minutes</option>
-      <option value="60">1 Hour</option>
-    </select>
-    <button onclick="generate()">Generate Email</button>
-    <h2 id="email"></h2>
-    <p>Expires at: <span id="expires"></span></p>
-    <ul id="inbox"></ul>
+  <div class="page">
+    <header class="topbar">
+      <div class="brand">
+        <span class="brand-mark">10</span>
+        <div>
+          <p class="brand-title">Tepex Mail</p>
+          <p class="brand-subtitle">Temporary mail powered by Mail.tm</p>
+        </div>
+      </div>
+      <div class="top-actions">
+        <button class="ghost" id="refresh">Refresh</button>
+        <button class="primary" id="generate">New Address</button>
+      </div>
+    </header>
+
+    <main class="content">
+      <section class="panel mailbox">
+        <div class="panel-header">
+          <h2>Your 10 Minute Mailbox</h2>
+          <span class="pill">Live inbox</span>
+        </div>
+        <p class="helper">
+          Use this disposable email for quick sign-ups, confirmations, and testing. Messages
+          arrive automatically and disappear when the timer ends.
+        </p>
+
+        <div class="email-card">
+          <div>
+            <p class="label">Your Email Address</p>
+            <p class="email" id="email">Click “New Address” to start</p>
+          </div>
+          <button class="ghost" id="copy">Copy</button>
+        </div>
+
+        <div class="timer">
+          <div>
+            <p class="label">Expires in</p>
+            <p class="time" id="expires">--:--</p>
+          </div>
+          <div class="select-wrap">
+            <p class="label">Lifetime</p>
+            <select id="expiry">
+              <option value="10">10 Minutes</option>
+              <option value="60">1 Hour</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="tips">
+          <div>
+            <h3>Keep it simple</h3>
+            <p>Copy the address, use it anywhere, and wait for the message list to fill.</p>
+          </div>
+          <div>
+            <h3>Auto-refresh</h3>
+            <p>Inbox checks every few seconds. Hit refresh if you are waiting on a new mail.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel inbox">
+        <div class="panel-header">
+          <h2>Inbox</h2>
+          <span class="muted" id="message-count">0 messages</span>
+        </div>
+        <ul id="inbox" class="message-list">
+          <li class="empty">
+            <h4>No messages yet</h4>
+            <p>Generate a mailbox and wait for emails to appear.</p>
+          </li>
+        </ul>
+      </section>
+    </main>
   </div>
-<script src="script.js"></script>
+
+  <script src="script.js"></script>
 </body>
 </html>
