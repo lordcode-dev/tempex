@@ -6,6 +6,8 @@ import {
   getMessages
 } from "./mailtm.js";
 import { createSession, extendSession, getSession } from "./expiry.js";
+import { createMailboxViaMailTm, getMessages } from "./mailtm.js";
+import { createSession, getSession } from "./expiry.js";
 
 const app = express();
 app.use(express.json());
@@ -61,6 +63,15 @@ app.get("/api/inbox/:email", async (req, res) => {
   try {
     const session = requireSession(req, res);
     if (!session) return;
+app.post("/api/email", generateMailbox);
+app.post("/api/email/generate", generateMailbox);
+
+app.get("/api/inbox/:email", async (req, res) => {
+  try {
+    const session = getSession(req.params.email);
+    if (!session) {
+      return res.status(404).json({ error: "Mailbox expired or unavailable" });
+    }
 
     const data = await getMessages(session.token);
     res.json(data["hydra:member"] || []);
