@@ -1,21 +1,88 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Tepex Mail</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tepex 10 Minute Mail</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="card">
-    <h1>Tepex</h1>
-    <select id="expiry">
-      <option value="10">10 Minutes</option>
-      <option value="60">1 Hour</option>
-    </select>
-    <button onclick="generate()">Generate Email</button>
-    <h2 id="email"></h2>
-    <p>Expires at: <span id="expires"></span></p>
-    <ul id="inbox"></ul>
+  <div class="page-shell">
+    <main id="main_content">
+      <div class="content">
+        <div class="mail_section">
+          <div class="mail_top_row">
+            <div id="copy_address" title="Click to copy address" role="button" tabindex="0" aria-label="Copy email address to clipboard">
+              <span class="copy_icon" aria-hidden="true">📋</span>
+            </div>
+            <div class="mail_address">
+              <input id="mail_address" type="text" value="" title="mail address" aria-label="Your temporary email address" readonly="readonly" placeholder="Click 'New Address' to generate" />
+            </div>
+            <div class="inbox_count">
+              <div id="inbox_count">
+                <span>Inbox</span>
+                <span class="mail_icon" aria-hidden="true">📨</span>
+                <span id="inbox_count_number">0</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="mail_bottom_row">
+            <div id="countdown" role="timer" aria-label="Time remaining" aria-live="polite" class="timer-state-safe">
+              <div class="counter_number" id="counter_min_two"><span>1</span></div>
+              <div class="counter_number" id="counter_min_one"><span>0</span></div>
+              <div class="counter_colon"><span>:</span></div>
+              <div class="counter_number" id="counter_sec_one"><span>0</span></div>
+              <div class="counter_number" id="counter_sec_two"><span>0</span></div>
+            </div>
+            <div class="actions">
+              <button id="new_address" class="action_btn primary">New Address</button>
+              <button id="get_more_time" class="action_btn" aria-label="Get 10 more minutes">10 more minutes!</button>
+              <button id="refresh_inbox" class="action_btn">Refresh</button>
+            </div>
+          </div>
+
+          <div id="timer-warning" class="timer-warning hidden" role="alert" aria-live="assertive">
+            <span aria-hidden="true">⚠️</span> Email expires in less than 1 minute!
+          </div>
+        </div>
+
+        <div id="sr-announcements" class="sr-only" role="status" aria-live="polite" aria-atomic="true"></div>
+
+        <div id="session-expired-overlay" class="session-expired-overlay hidden">
+          <div class="expired-content">
+            <div class="expired-icon">⏰</div>
+            <h2 class="expired-title">Session Expired</h2>
+            <p class="expired-message">Your temporary email address and all messages have expired.</p>
+            <button id="refresh-session-btn" class="refresh-session-btn">Get a New Email Address</button>
+          </div>
+        </div>
+
+        <section id="mail_messages">
+          <div id="inbox-empty-state" class="inbox-empty-state">
+            <div class="empty-state-icon">📡</div>
+            <p class="empty-state-title">Your inbox is ready</p>
+            <p class="empty-state-subtitle">Emails typically arrive within seconds</p>
+          </div>
+          <div id="mail_messages_content" class="messages_content"></div>
+        </section>
+
+        <section class="message_viewer">
+          <h2>Message Viewer</h2>
+          <div id="viewer_empty" class="viewer_empty">Select a message from inbox.</div>
+          <article id="viewer_content" class="viewer_content hidden">
+            <h3 id="message_subject"></h3>
+            <p id="message_from"></p>
+            <p id="message_to"></p>
+            <p id="message_date"></p>
+            <button id="delete_message" class="action_btn danger">Delete message</button>
+            <pre id="message_text"></pre>
+            <iframe id="message_html" title="HTML message"></iframe>
+          </article>
+        </section>
+      </div>
+    </main>
   </div>
-<script src="script.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
