@@ -3,94 +3,157 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Tepex - Temporary Mail</title>
-  <link rel="stylesheet" href="/style.css" />
+  <title>Tepex - 10 Minute Mail</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <main class="app">
-    <header class="app-header">
+  <div class="app">
+    <header class="header">
       <div>
         <h1>Tepex</h1>
-        <p>One-page temporary mail clone powered by Mail.tm</p>
       </div>
-      <div class="top-actions">
-        <button id="new_address" class="btn btn-primary">Get New Email</button>
-        <button id="get_more_time" class="btn">Extend 10 min</button>
+      <div class="header-actions">
+        <button id="new-email" class="btn primary">Get New Email</button>
+        <button id="extend" class="btn">Extend 10 min</button>
       </div>
     </header>
 
-    <section class="mailbox-card">
-      <div class="field email-field">
-        <label for="mail_address">Temporary Email Address</label>
-        <div class="email-row">
-          <input id="mail_address" type="text" placeholder="Press Get New Email" readonly />
-          <button id="copy_address" class="btn" aria-label="Copy email address">Copy</button>
+    <section class="mailbox-bar card">
+      <div class="address-wrap">
+        <label>Temporary Email Address</label>
+        <div class="address-row">
+          <input id="address" readonly value="Press Get New Email" />
+          <button id="copy" class="btn">Copy</button>
         </div>
       </div>
-
-      <div class="field metric-field">
-        <label>Remaining</label>
-        <div id="countdown" class="metric-value" aria-live="polite">--:--</div>
-      </div>
-
-      <div class="field lifetime-field">
-        <label for="lifetime_select">Lifetime</label>
-        <select id="lifetime_select">
-          <option value="10" selected>10 Minutes</option>
-          <option value="60">60 Minutes</option>
-        </select>
-      </div>
-
-      <div class="field status-field">
-        <label>Status</label>
-        <div id="mailbox_status" class="status idle">Idle</div>
+      <div class="meta-wrap">
+        <div>
+          <label>Remaining</label>
+          <div id="countdown" class="meta-value">--:--</div>
+        </div>
+        <div>
+          <label>Lifetime</label>
+          <select id="expiry" class="input">
+            <option value="10">10 Minutes</option>
+            <option value="60">1 Hour</option>
+          </select>
+        </div>
+        <div>
+          <label>Status</label>
+          <div id="status" class="meta-value muted">Idle</div>
+        </div>
       </div>
     </section>
 
-    <div id="timer-warning" class="timer-warning hidden" role="alert">⚠️ Email expires in less than 1 minute.</div>
-
-    <section class="panels">
-      <article class="panel" id="mail_messages">
-        <div class="panel-header">
+    <main class="grid">
+      <section class="card inbox">
+        <div class="section-head">
           <h2>Inbox</h2>
-          <div class="panel-tools">
-            <span id="inbox_count_number">0 messages</span>
-            <button id="refresh_inbox" class="btn">Refresh</button>
+          <div class="controls">
+            <span id="message-count" class="muted">0 messages</span>
+            <button id="refresh" class="btn">Refresh</button>
           </div>
         </div>
-        <div id="inbox-empty-state" class="panel-empty">No messages yet.</div>
-        <div id="mail_messages_content" class="messages"></div>
-      </article>
+        <ul id="message-list" class="message-list"></ul>
+      </section>
 
-      <article class="panel viewer-panel">
-        <div class="panel-header">
+      <section class="card viewer">
+        <div class="section-head">
           <h2>Message Viewer</h2>
-          <button id="delete_message" class="btn btn-danger" disabled>Delete</button>
+          <button id="delete" class="btn danger" disabled>Delete</button>
         </div>
 
-        <div id="viewer_empty" class="panel-empty">Select an email from the inbox to read full content.</div>
-
-        <div id="viewer_content" class="viewer hidden">
-          <h3 id="message_subject"></h3>
-          <p id="message_from"></p>
-          <p id="message_to"></p>
-          <p id="message_date"></p>
-          <pre id="message_text"></pre>
-          <iframe id="message_html" title="HTML message"></iframe>
+        <div id="empty-view" class="empty-view">
+          Select an email from the inbox to read full content.
         </div>
-      </article>
-    </section>
-  </main>
 
-  <div id="session-expired-overlay" class="session-expired-overlay hidden">
-    <div class="expired-content">
-      <h2>Session Expired</h2>
-      <p>Your temporary mailbox has expired.</p>
-      <button id="refresh-session-btn" class="btn btn-primary">Get a New Email Address</button>
-    </div>
+        <article id="message-view" class="message-view hidden">
+          <h3 id="view-subject"></h3>
+          <p id="view-from" class="muted"></p>
+          <p id="view-to" class="muted"></p>
+          <p id="view-date" class="muted"></p>
+          <pre id="view-text" class="message-text"></pre>
+          <iframe id="view-html" class="message-html" title="HTML email content"></iframe>
+        </article>
+  <title>Tepex Mail</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="page">
+    <header class="topbar">
+      <div class="brand">
+        <span class="brand-mark">10</span>
+        <div>
+          <p class="brand-title">Tepex Mail</p>
+          <p class="brand-subtitle">Temporary mail powered by Mail.tm</p>
+        </div>
+      </div>
+      <div class="top-actions">
+        <button class="ghost" id="refresh">Refresh</button>
+        <button class="primary" id="generate">New Address</button>
+      </div>
+    </header>
+
+    <main class="content">
+      <section class="panel mailbox">
+        <div class="panel-header">
+          <h2>Your 10 Minute Mailbox</h2>
+          <span class="pill">Live inbox</span>
+        </div>
+        <p class="helper">
+          Use this disposable email for quick sign-ups, confirmations, and testing. Messages
+          arrive automatically and disappear when the timer ends.
+        </p>
+
+        <div class="email-card">
+          <div>
+            <p class="label">Your Email Address</p>
+            <p class="email" id="email">Click “New Address” to start</p>
+          </div>
+          <button class="ghost" id="copy">Copy</button>
+        </div>
+
+        <div class="timer">
+          <div>
+            <p class="label">Expires in</p>
+            <p class="time" id="expires">--:--</p>
+          </div>
+          <div class="select-wrap">
+            <p class="label">Lifetime</p>
+            <select id="expiry">
+              <option value="10">10 Minutes</option>
+              <option value="60">1 Hour</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="tips">
+          <div>
+            <h3>Keep it simple</h3>
+            <p>Copy the address, use it anywhere, and wait for the message list to fill.</p>
+          </div>
+          <div>
+            <h3>Auto-refresh</h3>
+            <p>Inbox checks every few seconds. Hit refresh if you are waiting on a new mail.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel inbox">
+        <div class="panel-header">
+          <h2>Inbox</h2>
+          <span class="muted" id="message-count">0 messages</span>
+        </div>
+        <ul id="inbox" class="message-list">
+          <li class="empty">
+            <h4>No messages yet</h4>
+            <p>Generate a mailbox and wait for emails to appear.</p>
+          </li>
+        </ul>
+      </section>
+    </main>
   </div>
 
-  <div id="sr-announcements" class="sr-only" role="status" aria-live="polite" aria-atomic="true"></div>
-  <script src="/script.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
